@@ -13,6 +13,11 @@ const UserScema = new mongoose.Schema(
       unique: true,
     },
 
+    password: {
+      type: String,
+      required: true,
+    },
+
     profilefic: {
       type: String,
       default: "",
@@ -24,6 +29,6 @@ const UserScema = new mongoose.Schema(
   }
 );
 
-const User = new UserScema("User", UserScema);
+const User = mongoose.model("User", UserScema);
 
 export default User;
