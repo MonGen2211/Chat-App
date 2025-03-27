@@ -110,7 +110,6 @@ export const updateProfileFic = async (req, res) => {
     const user = await User.findByIdAndUpdate(userId, profilefic, {
       new: true,
     });
-    profilefic;
 
     return res.status(200).json({ data: user });
   } catch (error) {
