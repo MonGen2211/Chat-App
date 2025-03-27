@@ -103,11 +103,16 @@ export const logout = async (req, res) => {
 };
 
 export const updateProfileFic = async (req, res) => {
-  const { profilePic } = req.body;
+  const profilefic = req.body;
   try {
-    // console.log(jwt);
-    res.send("updateProfileFic route");
-    const user = await User.findOne({});
+    const token = req.cookies.jwt;
+    const { userId } = jwt.decode(token);
+    const user = await User.findByIdAndUpdate(userId, profilefic, {
+      new: true,
+    });
+    profilefic;
+
+    return res.status(200).json({ data: user });
   } catch (error) {
     console.log("error in controller : ", error);
     return res.status(500).json({ message: "Internal Server Error" });
