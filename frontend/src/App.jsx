@@ -7,7 +7,6 @@ import SettingPage from "./pages/SettingPage";
 import ProfilePage from "./pages/ProfilePage";
 
 import { Routes, Route } from "react-router-dom";
-import { axiosInstance } from "./lib/axios";
 
 const App = () => {
   return (
