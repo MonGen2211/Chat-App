@@ -1,8 +1,8 @@
 import { generateToken } from "../lib/utils.js";
 import User from "../models/auth.model.js";
-import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+
+import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req, res) => {
   const { fullname, email, password } = req.body;
@@ -103,15 +103,35 @@ export const logout = async (req, res) => {
 };
 
 export const updateProfileFic = async (req, res) => {
-  const profilefic = req.body;
   try {
-    const token = req.cookies.jwt;
-    const { userId } = jwt.decode(token);
-    const user = await User.findByIdAndUpdate(userId, profilefic, {
-      new: true,
-    });
+    const { profilePic } = req.body;
+    const userId = req.user._id;
+    if (!profilePic) {
+      return res.status(400).json({ message: "Profile pic is required" });
+    }
 
-    return res.status(200).json({ data: user });
+    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
+    console.log("Uploaded image URL:", cloudinary.uploader.upload(profilePic));
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        profilefic: uploadResponse.secure_url,
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log("error in udate profile : ", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const checkAuth = async (req, res) => {
+  try {
+    return res.status(200).json(req.user);
   } catch (error) {
     console.log("error in controller : ", error);
     return res.status(500).json({ message: "Internal Server Error" });

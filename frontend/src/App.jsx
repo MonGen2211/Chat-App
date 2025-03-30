@@ -7,8 +7,11 @@ import SettingPage from "./pages/SettingPage";
 import ProfilePage from "./pages/ProfilePage";
 
 import { Routes, Route } from "react-router-dom";
+import { useAuthStore } from "./store/useAuthSotre";
 
 const App = () => {
+  const { authUser } = useAuthStore();
+
   return (
     <div>
       <Navbar />
