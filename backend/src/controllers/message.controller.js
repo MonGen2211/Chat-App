@@ -41,9 +41,9 @@ export const getMessages = async (req, res) => {
 export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
-    const { id: userToChatId } = req.params;
+    const { id: receiverId } = req.params;
     const token = req.cookies.jwt;
-    const { userId: myId } = jwt.decode(token);
+    const { userId: senderId } = jwt.decode(token);
 
     let imageUrl;
 
@@ -62,7 +62,7 @@ export const sendMessage = async (req, res) => {
     await newMessage.save();
     // todo: Realtime functionality goes here => socket.io
 
-    res.status(201).json(newMesssage);
+    res.status(201).json(newMessage);
   } catch (error) {
     console.log("error in sendMessage controller: ", error);
     res.status(500).json({ message: "Internal Server Error" });
