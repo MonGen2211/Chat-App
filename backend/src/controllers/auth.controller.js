@@ -1,118 +1,100 @@
-import { generateToken } from "../lib/utils.js";
-import User from "../models/auth.model.js";
+import mongoose from "mongoose";
+import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-
+import { generateToken } from "../lib/util.js";
 import cloudinary from "../lib/cloudinary.js";
-
-export const signup = async (req, res) => {
-  const { fullname, email, password } = req.body;
-  try {
-    // check điền đầy đủ
-    if (!fullname || !email || !password) {
-      return res.status(400).json({ message: "Please field all" });
-    }
-
-    // check user đã tồn tại chưa
-    const user = await User.findOne({ email });
-
-    if (user !== null) {
-      return res.status(400).json({ message: "Email has created" });
-    }
-
-    // check password > 6
-    if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "Password need more than 6 character" });
-    }
-
-    // hasspassword
-    const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash(password, salt);
-
-    // thêm mới và tạo cookie
-    const newUser = new User({
-      fullname,
-      email,
-      password: hashPassword,
-    });
-
-    const userId = newUser._id.toString();
-    if (newUser) {
-      await newUser.save();
-      generateToken(userId, res);
-      res.status(201).json({
-        _id: newUser._id,
-        fullname: newUser.fullname,
-        email: newUser.email,
-        profilefic: newUser.profilefic,
-      });
-    } else {
-      return res.status(400).json({ message: "Invalid user Data" });
-    }
-  } catch (error) {
-    console.log("error in controller: ", error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    // check Provided Filed
+    // 1: check input
     if (!email || !password) {
-      return res.status(400).json({ message: "All Provided Filed" });
+      return res.status(400).json("Please field all provided");
     }
-
-    // check email
-    const user = await User.findOne({ email });
+    // 2: check email in database
+    const user = await User.findOne({ email: email });
     if (!user) {
       return res
         .status(400)
-        .json({ message: "Email does not have in Database" });
+        .json("Email do not have in database. Please Signup account first");
     }
-    // check password
-    const checkPassword = bcrypt.compareSync(password, user.password); // true
-    if (!checkPassword) {
-      return res.status(400).json({ message: "Password is incorrected" });
+    // 3: check password with that email
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(400).json("Password is wrong");
     }
-
-    // Create Cookie
+    // 4: give that email a cookie access login
     generateToken(user._id, res);
-
-    res.status(200).json({
-      _id: user._id,
-      fullname: user.fullname,
-      email: user.email,
-      profilefic: user.profilefic,
-    });
+    res.status(200).json("Login successfully");
   } catch (error) {
-    console.log("error in controller: ", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.log("Error in Login controller: ", error.message);
+    res.status(500).json("Internal Server Error");
   }
 };
 
 export const logout = async (req, res) => {
   try {
     res.cookie("jwt", "", { maxAge: 0 });
-    return res.status(200).json({ message: "Logout Successfully" });
+    res.status(200).json("Logout successfully");
   } catch (error) {
-    console.log("error in controller : ", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.log("Error in Logout controller: ", error.message);
+    res.status(500).json("Internal Server Error");
   }
 };
 
-export const updateProfileFic = async (req, res) => {
+export const signup = async (req, res) => {
+  const { fullname, email, password } = req.body;
   try {
-    const { profilePic } = req.body;
-    const userId = req.user._id;
-    if (!profilePic) {
-      return res.status(400).json({ message: "Profile pic is required" });
+    if (!fullname || !email || !password) {
+      return res.status(400).json("Please field all provided");
     }
 
-    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+    const user = await User.findOne({ email: email });
+    if (user) {
+      return res.status(400).json("Email has exists in db");
+    }
 
-    console.log("Uploaded image URL:", cloudinary.uploader.upload(profilePic));
+    const salt = 10;
+    const hashPassword = bcrypt.hashSync(password, salt);
+    const newUser = new User({
+      fullname: fullname,
+      email: email,
+      password: hashPassword,
+    });
+
+    const userId = newUser._id.toString();
+    await newUser.save();
+
+    generateToken(userId, res);
+
+    res.status(200).json("Signup successfully");
+  } catch (error) {
+    console.log("Error in Signup controller: ", error.message);
+    res.status(500).json("Internal Server Error");
+  }
+};
+
+export const check = async (req, res) => {
+  try {
+    // lấy cookies có tên là jwt
+
+    res.status(200).json({
+      message: "User checking",
+      user: user,
+    });
+  } catch (error) {
+    console.log("Error in check controller: ", error.message);
+    res.status(500).json("Internal Server Error");
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { profilefic } = req.body;
+    const userId = req.user._id;
+    const uploadResponse = await cloudinary.uploader.upload(profilefic);
+
+    // console.log("Uploaded image URL:", cloudinary.uploader.upload(profilefic));
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
@@ -122,18 +104,9 @@ export const updateProfileFic = async (req, res) => {
         new: true,
       }
     );
-    return res.status(200).json(updatedUser);
+    res.status(200).json(updatedUser);
   } catch (error) {
-    console.log("error in udate profile : ", error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export const checkAuth = async (req, res) => {
-  try {
-    return res.status(200).json(req.user);
-  } catch (error) {
-    console.log("error in controller : ", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.log("Error in updateProfile controller: ", error.message);
+    res.status(500).json("Internal Server Error");
   }
 };
