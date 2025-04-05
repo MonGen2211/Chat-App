@@ -5,15 +5,15 @@ import {
   logout,
   signup,
   updateProfile,
-} from "../controllers/auth.controller.js";
-import { protectedRoute } from "../middleware/protected.route.js";
+} from "../controllers/user.controller.js";
+import { protectedRoute } from "../middleware/protectedRoute.js";
 
 const router = express.Router();
 
+router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
-router.post("/signup", signup);
 router.get("/check", protectedRoute, check);
-router.put("/update-profilefic", protectedRoute, updateProfile);
+router.get("/update-profilefic", protectedRoute, updateProfile);
 
 export default router;

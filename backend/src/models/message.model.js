@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const messageSchema = new mongoose.Schema(
   {
     receiveId: {
@@ -14,10 +13,12 @@ const messageSchema = new mongoose.Schema(
 
     text: {
       type: String,
+      default: "",
     },
 
     image: {
       type: String,
+      default: "",
     },
   },
   {
@@ -26,5 +27,4 @@ const messageSchema = new mongoose.Schema(
 );
 
 const Message = mongoose.model("Message", messageSchema);
-
 export default Message;
