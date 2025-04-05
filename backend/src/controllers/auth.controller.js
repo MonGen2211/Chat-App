@@ -77,7 +77,8 @@ export const signup = async (req, res) => {
 export const check = async (req, res) => {
   try {
     // lấy cookies có tên là jwt
-
+    const userId = req.user._id;
+    const user = await User.findById({ _id: userId });
     res.status(200).json({
       message: "User checking",
       user: user,

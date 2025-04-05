@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { connectDb } from "./lib/connectDb.js";
 import authRoutes from "./routes/auth.route.js";
+import messageRoutes from "./routes/message.route.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -16,7 +17,10 @@ app.use(cookieParser());
 const PORT = process.env.PORT;
 
 app.use("/api/auth", authRoutes);
-// app.use("/api/message", messageRoutes);
+app.use("/api/message", messageRoutes);
+// getUser
+// getMessage
+// sendMessage
 app.listen(PORT, () => {
   console.log("server is running on PORT: ", PORT);
   connectDb();
