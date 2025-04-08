@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import SidbarSkeleton from "./skeletons/SidbarSkeleton";
 import { Users } from "lucide-react";
@@ -10,6 +10,12 @@ const Sidebar = () => {
 
   const { onlineUsers } = useAuthStore();
 
+  const [showOnlineOnly, setShowOnlineOnly] = useState(false);
+
+  const fillteredUsers = showOnlineOnly
+    ? users.filter((user) => onlineUsers.includes(user._id))
+    : users;
+
   useEffect(() => {
     getUsers();
   }, [getUsers]);
@@ -19,7 +25,7 @@ const Sidebar = () => {
   if (isUserLoading) return <SidbarSkeleton />;
 
   return (
-    <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
+    <aside className="h-full overflow-y-auto w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200  ">
       <div className="border-b border-base-300 w-full p-5">
         <div className="flex items-center gap-2">
           <Users className="size-6" />
@@ -27,7 +33,7 @@ const Sidebar = () => {
         </div>
 
         {/* TODO: Online filter toggle */}
-        {/* <div className="mt-3 hidden lg:flex items-center gap-2">
+        <div className="mt-3 hidden lg:flex items-center gap-2">
           <label className="cursor-pointer flex items-center gap-2">
             <input
               type="checkbox"
@@ -40,10 +46,10 @@ const Sidebar = () => {
           <span className="text-xs text-zinc-500">
             ({onlineUsers.length - 1} online)
           </span>
-        </div> */}
+        </div>
       </div>
 
-      {users.map((user) => (
+      {fillteredUsers.map((user) => (
         <button
           key={user._id}
           onClick={() => setSelectedUser(user)}
@@ -81,7 +87,7 @@ const Sidebar = () => {
         </button>
       ))}
 
-      {users.length === 0 && (
+      {fillteredUsers.length === 0 && (
         <div className="text-center text-zinc-500 py-4">No online users</div>
       )}
     </aside>

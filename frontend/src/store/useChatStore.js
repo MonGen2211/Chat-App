@@ -58,6 +58,10 @@ export const useChatStore = create((set, get) => ({
     //todo: optimize this one later
 
     socket.on("newMessage", (newMessage) => {
+      const isMessageSentFDromSelectedUser =
+        newMessage.senderId === selectedUser._id;
+
+      if (!isMessageSentFDromSelectedUser) return;
       set({
         messages: [...get().messages, newMessage],
       });
@@ -71,6 +75,5 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  // todo: optimize this one later
   setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));

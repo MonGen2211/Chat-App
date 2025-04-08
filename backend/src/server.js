@@ -7,6 +7,7 @@ import connectDb from "./lib/connectDb.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { app, server } from "./lib/socket.js";
+import { seedDatabase } from "./seeds/user.seed.js";
 
 dotenv.config();
 
