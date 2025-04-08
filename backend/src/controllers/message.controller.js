@@ -2,6 +2,7 @@ import cryptoJS from "crypto-js";
 import Message from "../models/message.model.js";
 import cryptoJs from "crypto-js";
 import User from "../models/user.model.js";
+import cloudinary from "../lib/cloudinary.js";
 export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
@@ -11,7 +12,6 @@ export const sendMessage = async (req, res) => {
     let hashText = "";
     let hashImage = "";
     if (text) {
-      1;
       hashText = cryptoJS.AES.encrypt(
         text,
         process.env.JWT_SECRETKEY_CRYPTOJS
@@ -19,13 +19,15 @@ export const sendMessage = async (req, res) => {
     }
 
     if (image) {
+      const uploadResponse = await cloudinary.uploader.upload(image);
+      const imageUrl = uploadResponse.secure_url;
       hashImage = cryptoJS.AES.encrypt(
-        image,
+        imageUrl,
         process.env.JWT_SECRETKEY_CRYPTOJS
       ).toString();
     }
 
-    const newMessage = new Message({
+    let newMessage = new Message({
       senderId,
       receiveId,
       text: hashText || "",
@@ -33,6 +35,9 @@ export const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
+
+    newMessage.text = text;
+    newMessage.image = image;
 
     res.status(200).json({ message: "SendMessage Successfully", newMessage });
   } catch (error) {
@@ -47,7 +52,12 @@ export const getMessage = async (req, res) => {
     const senderId = req.user._id.toString();
 
     const messages = await Message.find({
-      $or: [{ senderId: senderId }, { receiveId: receiveId }],
+      $or: [
+        // message: me => you
+        { senderId: senderId, receiveId: receiveId },
+        // message: you => me
+        { senderId: receiveId, receiveId: senderId },
+      ],
     });
 
     const decodeMessages = messages.map((message) => ({

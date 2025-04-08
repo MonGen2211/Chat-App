@@ -85,7 +85,7 @@ export const check = async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "Unthorized " });
     }
-    return res.status(200).json({ message: "Okie " });
+    return res.status(200).json(user);
   } catch (error) {
     console.log("error in check Controller: ", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -95,6 +95,7 @@ export const check = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { profilefic } = req.body;
+    // console.log(profilefic);
     const user = req.user;
     const userId = user._id.toString();
     const uploadResponse = await cloudinary.uploader.upload(profilefic);
