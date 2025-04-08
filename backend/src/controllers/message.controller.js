@@ -3,6 +3,8 @@ import Message from "../models/message.model.js";
 import cryptoJs from "crypto-js";
 import User from "../models/user.model.js";
 import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
+
 export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
@@ -38,6 +40,11 @@ export const sendMessage = async (req, res) => {
 
     newMessage.text = text;
     newMessage.image = image;
+
+    const receiveSoceketId = getReceiverSocketId(receiveId);
+    if (receiveSoceketId) {
+      io.to(receiveSoceketId).emit("newMessage", newMessage);
+    }
 
     res.status(200).json({ message: "SendMessage Successfully", newMessage });
   } catch (error) {

@@ -6,16 +6,31 @@ import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
 
 const ChatContainer = () => {
-  const { getMessages, isMessageLoading, selectedUser, messages } =
-    useChatStore();
+  const {
+    getMessages,
+    isMessageLoading,
+    selectedUser,
+    messages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useChatStore();
 
+  // console.log(messages);
   const { authUser } = useAuthStore();
 
   // const [image, setImage] = useState(null);
 
   useEffect(() => {
     getMessages(selectedUser._id);
-  }, [selectedUser._id, getMessages]);
+    subscribeToMessages();
+
+    return () => unsubscribeFromMessages();
+  }, [
+    selectedUser._id,
+    getMessages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
 
   if (isMessageLoading) {
     return (
