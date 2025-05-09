@@ -1,4 +1,6 @@
 
+<div style="text-align: left">
+
 # Chat App
 
 A Realtime Chat Application built with NodeJS (backend) and ReactJS (frontend), featuring authentication, file upload, and real-time messaging using Socket.io.
@@ -111,3 +113,5 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ## License
 
 MIT
+
+</div>
