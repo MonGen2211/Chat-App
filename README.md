@@ -12,6 +12,25 @@ A **Realtime Chat Application** built with **NodeJS** (backend) and **ReactJS** 
 
 ---
 
+## 🖼️ Tech Stack & Icons
+
+- ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+- ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+- ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+- ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+- ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)
+- ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+- ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+- ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+- ![DaisyUI](https://img.shields.io/badge/DaisyUI-7B3AED?style=for-the-badge&logo=daisyui&logoColor=white)
+- ![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white)
+- ![Zustand](https://img.shields.io/badge/Zustand-FFCD00?style=for-the-badge&logo=zustand&logoColor=black)
+- ![Bcryptjs](https://img.shields.io/badge/bcryptjs-7B3F00?style=for-the-badge)
+- ![Express Validator](https://img.shields.io/badge/express--validator-10A37F?style=for-the-badge)
+- ![Crypto-js](https://img.shields.io/badge/CryptoJS-003366?style=for-the-badge)
+
+---
+
 ## ✨ Features
 
 - 🔐 **Authentication & Authorization**
@@ -41,16 +60,6 @@ A **Realtime Chat Application** built with **NodeJS** (backend) and **ReactJS** 
   - Zustand for state management
   - TailwindCSS + DaisyUI for responsive UI
   - Realtime updates with socket.io-client
-
----
-
-## 🛠 Tech Stack
-
-| Layer       | Technologies                                                                 |
-|-------------|-------------------------------------------------------------------------------|
-| **Backend** | NodeJS, ExpressJS, MongoDB (Mongoose), bcryptjs, JWT, Cloudinary, Socket.io  |
-| **Frontend**| ReactJS, Vite, Zustand, TailwindCSS, DaisyUI, Socket.io-client                |
-| **Other**   | express-validator, crypto-js                                                 |
 
 ---
 
