@@ -1,49 +1,60 @@
 
 <div style="text-align: left">
 
-# Chat App
+# 🚀 Chat App
 
-A Realtime Chat Application built with NodeJS (backend) and ReactJS (frontend), featuring authentication, file upload, and real-time messaging using Socket.io.
+![GitHub repo size](https://img.shields.io/github/repo-size/MonGen2211/Chat-App)
+![GitHub issues](https://img.shields.io/github/issues/MonGen2211/Chat-App)
+![GitHub forks](https://img.shields.io/github/forks/MonGen2211/Chat-App)
+![GitHub stars](https://img.shields.io/github/stars/MonGen2211/Chat-App)
 
-## Features
+A **Realtime Chat Application** built with **NodeJS** (backend) and **ReactJS** (frontend), featuring authentication, file upload, and real-time messaging using **Socket.io**.
 
-- **Authentication & Authorization**
+---
+
+## ✨ Features
+
+- 🔐 **Authentication & Authorization**
   - JWT-based authentication
   - Secure password hashing with bcryptjs
 
-- **Realtime Chat**
+- 💬 **Realtime Chat**
   - Bi-directional messaging using Socket.io
   - Typing indicators and message status updates
   - Online/offline presence detection
 
-- **File Uploads**
+- 📁 **File Uploads**
   - Image upload & storage via Cloudinary
   - Support for file previews
 
-- **Security & Validation**
+- 🔒 **Security & Validation**
   - Input validation with express-validator
   - Data encryption using crypto-js
   - Protected routes and role-based access
 
-- **Database**
+- 🗄️ **Database**
   - MongoDB (via Mongoose) for storing user & message data
   - Efficient querying & indexing
 
-- **Frontend**
+- 🌐 **Frontend**
   - Built with ReactJS + Vite
   - Zustand for state management
   - TailwindCSS + DaisyUI for responsive UI
   - Realtime updates with socket.io-client
 
-## Tech Stack
+---
+
+## 🛠 Tech Stack
 
 | Layer       | Technologies                                                                 |
 |-------------|-------------------------------------------------------------------------------|
-| Backend     | NodeJS, ExpressJS, MongoDB (Mongoose), bcryptjs, JWT, Cloudinary, Socket.io  |
-| Frontend    | ReactJS, Vite, Zustand, TailwindCSS, DaisyUI, Socket.io-client                |
-| Other       | express-validator, crypto-js                                                 |
+| **Backend** | NodeJS, ExpressJS, MongoDB (Mongoose), bcryptjs, JWT, Cloudinary, Socket.io  |
+| **Frontend**| ReactJS, Vite, Zustand, TailwindCSS, DaisyUI, Socket.io-client                |
+| **Other**   | express-validator, crypto-js                                                 |
 
-## Folder Structure
+---
+
+## 📂 Folder Structure
 
 **Backend**
 ```
@@ -70,7 +81,9 @@ A Realtime Chat Application built with NodeJS (backend) and ReactJS (frontend), 
 └── index.html
 ```
 
-## How to Run
+---
+
+## 🚦 How to Run
 
 **Backend**
 ```bash
@@ -86,7 +99,9 @@ npm install
 npm run dev
 ```
 
-## Environment Variables
+---
+
+## ⚙️ Environment Variables
 
 Create a `.env` file in `/backend` with the following:
 
@@ -99,18 +114,22 @@ CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
-## Future Improvements
+---
 
-- Push notifications
-- Video/voice call integration
-- Group chat
-- Read receipts
+## 🚧 Future Improvements
 
-## Contributing
+- 📲 Push notifications
+- 📹 Video/voice call integration
+- 👥 Group chat
+- ✔️ Read receipts
+
+---
+
+## 🤝 Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-## License
+## 📄 License
 
 MIT
 
